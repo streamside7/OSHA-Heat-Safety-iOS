@@ -25,19 +25,11 @@ class WebViewController: GAITrackedViewController, UIWebViewDelegate {
         // Set navigation bar title
         self.title = NSLocalizedString(infoContent, comment: infoContent + " Title")
         
-        // Get the contents of the file to load
-        let localFilePath = NSBundle.mainBundle().pathForResource(infoContent, ofType: "html")
-        do {
-        let contents = try NSString(contentsOfFile: localFilePath!, encoding: NSUTF8StringEncoding)
+        let url = NSURL.fileURLWithPath(NSBundle.mainBundle().pathForResource(infoContent, ofType: "html")!)
+
+        let request = NSURLRequest(URL: url)
+        webView.loadRequest(request)
         
-        // Get the base URL of the file so we can access its resources
-        let baseUrl = NSURL.fileURLWithPath(NSBundle.mainBundle().bundlePath)
-        
-        // Load contents into the webview
-        webView.loadHTMLString(contents as String, baseURL: baseUrl)
-        } catch {
-            print(error)
-        }
     }
 
     override func didReceiveMemoryWarning() {
